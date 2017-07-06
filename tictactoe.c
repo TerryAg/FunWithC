@@ -14,14 +14,14 @@ void print_board(char board[BOARD_SIZE][BOARD_SIZE]) {
 	}
 }
 
-int game_complete(int curr_player, int scoring[BOARD_SIZE*2 + 2], int full_squares) {
+int game_complete(int curr_player, int scoring[BOARD_SIZE*2 + 2], int turns_done) {
 	for (int x = 0; x < BOARD_SIZE*2 + 2; x++) {
 		if (abs(scoring[x]) == BOARD_SIZE) {
 			printf("Player %d wins!!\n", curr_player);
 			return 1;
 		}
 	}
-	if (full_squares == BOARD_SIZE*BOARD_SIZE) {
+	if (turns_done == BOARD_SIZE*BOARD_SIZE) {
 		printf("Draw!\n");
 		return 1;
 	}
@@ -33,7 +33,7 @@ void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int 
 	int choice;
 	int row, col;
 	int score = curr_player == 1 ? 1 : -1;
-	printf("Player %d: Your turn. Pick a square. ", curr_player);
+	printf("Player %d: Pick a square: ", curr_player);
 	while (fgets(input, MAX_LINE, stdin) != '\0') {
 		choice = atoi(input);
 		// printf("int: %d\n", choice);
@@ -71,23 +71,24 @@ int main(void) {
 	char pattern = '\0';
 	int curr_player = 1;
 	int scoring[BOARD_SIZE*2 + 2] = {0};
-	int full_squares = 0;
+	int turns_done = 0;
 	printf("Welcome to Tic-Tac-Toe!\n");
-	printf("PLAYER 1: Would you like to be O or X? ");
+	printf("Player 1: Would you like to be O or X?\n");
 	while ((pattern != 'X') && (pattern != 'O')) {
+		printf("Please input O or X: ");
 		fgets(&pattern, MAX_LINE, stdin);
 	}
 	pattern = pattern == 'O' ?  'X' : 'O';
 	printf("Player 2 is %c.\n", pattern);
-	
+	printf("---------------\n");
 	print_board(board);
 
 	while (1) {
 		pattern = pattern == 'O' ?  'X' : 'O'; // need to do this first
 		turn(board, curr_player, pattern, scoring);
-		full_squares++;
+		turns_done++;
 		print_board(board);
-		if (game_complete(curr_player, scoring, full_squares)) {
+		if (game_complete(curr_player, scoring, turns_done)) {
 			break;
 		}
 		curr_player = curr_player == 1 ? 2 : 1;
