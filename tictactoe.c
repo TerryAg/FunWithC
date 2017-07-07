@@ -47,24 +47,25 @@ void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int 
 			printf("That's not a number! ");
 		} else {
 			num = (int) choice; // Since strtol returns a long.
-			if ((choice < 1) || (choice > 9)) {
+			if ((choice < 1) || (choice > BOARD_SIZE*BOARD_SIZE)) {
 				printf("That number is out of range! ");
-			} else if (board[(choice - 1) / 3][(choice - 1) % 3] != ' ') {
-				printf("That spot is already occupied! ");
 			} else {
-				row = (choice - 1) / 3;
-				col = (choice - 1) % 3;
-
-				board[row][col] = pattern;
-				scoring[row] += score; // row n
-				scoring[BOARD_SIZE + col] += score; // col n;
-				if (row == col) {
-					scoring[2*BOARD_SIZE] += score; // topleft diag
-				}
-				if (BOARD_SIZE - col - 1 == row) {
-					scoring[2*BOARD_SIZE + 1] += score; //topright
-				}
-				return;
+				row = (choice - 1) / BOARD_SIZE;
+				col = (choice - 1) % BOARD_SIZE;
+				if (board[row][col] != ' ') {
+					printf("That spot is already occupied! ");
+				} else {
+					board[row][col] = pattern;
+					scoring[row] += score; // row n
+					scoring[BOARD_SIZE + col] += score; // col n;
+					if (row == col) {
+						scoring[2*BOARD_SIZE] += score; // topleft diag
+					}
+					if (BOARD_SIZE - col - 1 == row) {
+						scoring[2*BOARD_SIZE + 1] += score; //topright
+					}
+					return;
+				}	
 			}
 		}
 		continue;
