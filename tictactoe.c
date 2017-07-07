@@ -31,33 +31,38 @@ int game_complete(int curr_player, int scoring[BOARD_SIZE*2 + 2], int turns_done
 
 void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int scoring[BOARD_SIZE*2 + 2]) {
 	char input[MAX_LINE];
-	int choice;
+	int choice, num;
 	int row, col;
 	int score = curr_player == 1 ? 1 : -1;
+
+	char *end;
 	printf("Player %d: Pick a square: ", curr_player);
 	while (fgets(input, MAX_LINE, stdin) != '\0') {
-		choice = atoi(input);
+		choice = strtol(input, &end, 10); // does not differentiate 0 and incorrect input
 		// printf("int: %d\n", choice);
-		if (choice == 0) {
+		if (end == input) {
 			printf("That's not a number! ");
-		} else if ((choice < 1) || (choice > 9)) {
-			printf("That number is out of range! ");
-		} else if (board[(choice - 1) / 3][(choice - 1) % 3] != ' ') {
-			printf("That spot is already occupied! ");
 		} else {
-			row = (choice - 1) / 3;
-			col = (choice - 1) % 3;
+			num = (int) choice;
+			if ((choice < 1) || (choice > 9)) {
+				printf("That number is out of range! ");
+			} else if (board[(choice - 1) / 3][(choice - 1) % 3] != ' ') {
+				printf("That spot is already occupied! ");
+			} else {
+				row = (choice - 1) / 3;
+				col = (choice - 1) % 3;
 
-			board[row][col] = pattern;
-			scoring[row] += score; // row n
-			scoring[BOARD_SIZE + col] += score; // col n;
-			if (row == col) {
-				scoring[2*BOARD_SIZE] += score; // topleft diag
+				board[row][col] = pattern;
+				scoring[row] += score; // row n
+				scoring[BOARD_SIZE + col] += score; // col n;
+				if (row == col) {
+					scoring[2*BOARD_SIZE] += score; // topleft diag
+				}
+				if (BOARD_SIZE - col - 1 == row) {
+					scoring[2*BOARD_SIZE + 1] += score; //topright
+				}
+				return;
 			}
-			if (BOARD_SIZE - col - 1 == row) {
-				scoring[2*BOARD_SIZE + 1] += score; //topright
-			}
-			return;
 		}
 		continue;
 	}
