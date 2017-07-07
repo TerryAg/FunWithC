@@ -5,16 +5,6 @@
 #define BOARD_SIZE 3
 #define MAX_LINE 128
 
-/* void print_board(char board[BOARD_SIZE][BOARD_SIZE]) {
-	for (int x = 0; x < BOARD_SIZE; x++) {
-		printf(" %d %d %d\n", x*3+1, x*3+2, x*3+3);
-		for (int y = 0; y < BOARD_SIZE; y++) {
-			printf("|%c", board[x][y]);
-		}
-		printf("|\n");
-	}
-}*/
-
 void print_board(char board[BOARD_SIZE][BOARD_SIZE]) {
 	for (int x = 1; x <= BOARD_SIZE*BOARD_SIZE; x++) {
 		printf(" %d", x);
@@ -83,10 +73,17 @@ void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int 
 	exit(0);
 }
 
+void create_board(char board[BOARD_SIZE][BOARD_SIZE]) {
+	for (int x = 0; x < BOARD_SIZE; x++) {
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			board[x][y] = ' ';
+		}
+	}
+}
+
 int main(void) {
-	char board[BOARD_SIZE][BOARD_SIZE] = {{' ', ' ', ' '},
-										  {' ', ' ', ' '},
-										  {' ', ' ', ' '}};
+	char board[BOARD_SIZE][BOARD_SIZE];
+	create_board(board);
 	char pattern = '\0';
 	int curr_player = 1;
 	int scoring[BOARD_SIZE*2 + 2] = {0};
