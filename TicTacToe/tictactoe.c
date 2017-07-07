@@ -20,7 +20,7 @@ int main(void) {
 			exit(0);
 		}
 	}
-	printf("Player 2 is %c.\n", pattern == 'O' ?  'X' : 'O');
+	printf("Player 2 is %c.\n", pattern == 'O' ? 'X' : 'O');
 	printf("---------------\n");
 	print_board(board);
 
@@ -31,7 +31,7 @@ int main(void) {
 		if (game_complete(curr_player, scoring, turns_done)) {
 			break;
 		}
-		pattern = pattern == 'O' ?  'X' : 'O';
+		pattern = pattern == 'O' ? 'X' : 'O';
 		curr_player = curr_player == 1 ? 2 : 1;
 	}
 }
