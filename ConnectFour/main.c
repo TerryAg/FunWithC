@@ -31,5 +31,5 @@ int main(void) {
 	char board[BOARD_LENGTH][BOARD_HEIGHT];
 	create_board(board);
 	print_board(board);
-	
+
 }
