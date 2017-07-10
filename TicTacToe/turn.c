@@ -13,31 +13,26 @@ void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int 
 	printf("Player %d: Pick a square: ", curr_player);
 	while (fgets(input, MAX_LINE, stdin) != '\0') {
 		choice = strtol(input, &end, 10);
-		if (end == input) {
-			printf("That's not a number! ");
-			continue;
-		}
-		num = (int) choice; // Since strtol returns a long.
-		if ((choice < 1) || (choice > BOARD_SIZE*BOARD_SIZE)) {
-			printf("That number is out of range! ");
-			continue;
-		}
 		row = (choice - 1) / BOARD_SIZE;
 		col = (choice - 1) % BOARD_SIZE;
-		if (board[row][col] != ' ') {
+		if (end == input) {
+			printf("That's not a number! ");
+		} else if ((choice < 1) || (choice > BOARD_SIZE*BOARD_SIZE)) {
+			printf("That number is out of range! ");
+		} else if (board[row][col] != ' ') {
 			printf("That spot is already occupied! ");
-			continue;
+		} else {
+			board[row][col] = pattern;
+			scoring[row] += score; // row n
+			scoring[BOARD_SIZE + col] += score; // col n;
+			if (row == col) {
+				scoring[2*BOARD_SIZE] += score; // topleft diag
+			}
+			if (BOARD_SIZE - col - 1 == row) {
+				scoring[2*BOARD_SIZE + 1] += score; //topright
+			}
+			return;
 		}
-		board[row][col] = pattern;
-		scoring[row] += score; // row n
-		scoring[BOARD_SIZE + col] += score; // col n;
-		if (row == col) {
-			scoring[2*BOARD_SIZE] += score; // topleft diag
-		}
-		if (BOARD_SIZE - col - 1 == row) {
-			scoring[2*BOARD_SIZE + 1] += score; //topright
-		}
-		return;
 	}
 	printf("\nQuitting...\n"); // CTRL+D has been hit
 	exit(0);
