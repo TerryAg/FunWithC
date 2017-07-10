@@ -24,7 +24,16 @@ void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 	printf("\n");
 }
 
-void turn(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
+int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
+	// Returns the top-most empty space of a column
+	for (int x = BOARD_HEIGHT-1; x >= 0; x--) {
+		if (board[x][column] == ' ') {
+			return x;
+		}
+	}
+}
+
+void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 	char input = '\0';
 	char *end;
 	int choice, num;
@@ -33,24 +42,22 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 		choice = strtol(input, &end, 10);
 		if (end == input) {
 			printf("That's not a number! ");
-			continue;
-		}
-		num = (int) choice; // Since strtol returns a long.
-		if ((choice < 1) || (choice > BOARD_LENGTH)) {
+		} else if ((choice < 1) || (choice > BOARD_LENGTH)) {
 			printf("That number is out of range! ");
-			continue;
-		}
-		if (board[BOARD_HEIGHT-1][choice] != ' ') {
+		} else if (board[BOARD_HEIGHT-1][choice] != ' ') {
 			printf("Column is full! ")
-			continue;
+		} else {
+			board[top_of_col(choice-1)][choice-1] = pattern;
 		}
-		
+
 	}
 }
 
 int main(void) {
 	char board[BOARD_LENGTH][BOARD_HEIGHT];
 	create_board(board);
+	print_board(board);
+	turn(board, 'X');
 	print_board(board);
 
 }
