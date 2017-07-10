@@ -14,8 +14,8 @@ void create_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 }
 
 void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
-	for (int x = BOARD_HEIGHT-1; x >= 0; x--) {
-		for (int y = 0; y < BOARD_LENGTH; y++) {
+	for (int x = 0; x < BOARD_LENGTH; x++) {
+		for (int y = 0; y < BOARD_HEIGHT; y++) {
 			printf("|%c", board[x][y]);
 		}
 		printf("|\n");
@@ -28,7 +28,8 @@ void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 
 int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	// Returns the top-most empty space of a column
-	for (int x = BOARD_HEIGHT-1; x >= 0; x--) {
+	for (int x = 0; x < BOARD_HEIGHT; x++) {
+		printf("x: %d\n", x);
 		if (board[x][column] == ' ') {
 			return x;
 		}
@@ -50,6 +51,8 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 		} else if (board[BOARD_HEIGHT-1][choice] != ' ') {
 			printf("Column is full! ");
 		} else {
+			printf("xx\n");
+			printf("%d\n", choice-1);
 			board[top_of_col(board, choice-1)][choice-1] = pattern;
 			return;
 		}
