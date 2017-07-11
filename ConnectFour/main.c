@@ -12,11 +12,20 @@ void create_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 		}
 	}
 }
-
+/*
+	  bottom					top
+	{{' ', ' ', ' ', ' ', ' ', ' '}, // col 1
+	 {' ', ' ', ' ', ' ', ' ', ' '}, // col 2
+	 {' ', ' ', ' ', ' ', ' ', ' '}, // etc
+	 {' ', ' ', ' ', ' ', ' ', ' '},
+	 {' ', ' ', ' ', ' ', ' ', ' '},
+	 {' ', ' ', ' ', ' ', ' ', ' '},
+	 {' ', ' ', ' ', ' ', ' ', ' '}}
+*/
 void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
-	for (int x = 0; x < BOARD_LENGTH; x++) {
-		for (int y = 0; y < BOARD_HEIGHT; y++) {
-			printf("|%c", board[x][y]);
+	for (int x = BOARD_HEIGHT-1; x >= 0; x--) {
+		for (int y = 0; y < BOARD_LENGTH; y++) {
+			printf("|%c", board[y][x]);
 		}
 		printf("|\n");
 	}
@@ -30,7 +39,7 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	// Returns the top-most empty space of a column
 	for (int x = 0; x < BOARD_HEIGHT; x++) {
 		printf("x: %d\n", x);
-		if (board[x][column] == ' ') {
+		if (board[column][x] == ' ') {
 			return x;
 		}
 	}
@@ -53,7 +62,7 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 		} else {
 			printf("xx\n");
 			printf("%d\n", choice-1);
-			board[top_of_col(board, choice-1)][choice-1] = pattern;
+			board[choice-1][top_of_col(board, choice-1)] = pattern;
 			return;
 		}
 
