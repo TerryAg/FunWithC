@@ -57,7 +57,7 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 			printf("That's not a number! ");
 		} else if ((choice < 1) || (choice > BOARD_LENGTH)) {
 			printf("That number is out of range! ");
-		} else if (board[BOARD_HEIGHT-1][choice] != ' ') {
+		} else if (board[choice-1][BOARD_HEIGHT-1] != ' ') {
 			printf("Column is full! ");
 		} else {
 			printf("xx\n");
@@ -73,7 +73,10 @@ int main(void) {
 	char board[BOARD_LENGTH][BOARD_HEIGHT];
 	create_board(board);
 	print_board(board);
-	turn(board, 'X');
-	print_board(board);
+	while (1) {
+		turn(board, 'X');
+		print_board(board);
+	}
+	
 	return 1;
 }
