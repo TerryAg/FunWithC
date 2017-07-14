@@ -46,23 +46,24 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	return -1; // full col. shouldn't happen
 }
 
+int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
+	return 0;
+}
+
 void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 	char input[MAX_LINE];
 	char *end;
 	int choice, num;
-	printf("Player #: Pick a column. ");
 	while (fgets(input, MAX_LINE, stdin) != '\0') {
-		choice = strtol(input, &end, 10);
+		choice = strtol(input, &end, 10) - 1;
 		if (end == input) {
 			printf("That's not a number! ");
-		} else if ((choice < 1) || (choice > BOARD_LENGTH)) {
+		} else if ((choice < 0) || (choice > BOARD_LENGTH-1)) {
 			printf("That number is out of range! ");
-		} else if (board[choice-1][BOARD_HEIGHT-1] != ' ') {
+		} else if (board[choice][BOARD_HEIGHT-1] != ' ') {
 			printf("Column is full! ");
 		} else {
-			printf("xx\n");
-			printf("%d\n", choice-1);
-			board[choice-1][top_of_col(board, choice-1)] = pattern;
+			board[choice][top_of_col(board, choice)] = pattern;
 			return;
 		}
 
@@ -71,11 +72,34 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 
 int main(void) {
 	char board[BOARD_LENGTH][BOARD_HEIGHT];
+	char pattern = '\0';
+	int curr_player = 1;
+
 	create_board(board);
 	print_board(board);
+	printf("Welcome to Connect Four!\n");
+	printf("Player 1: Would you like to be O or X?\n");
+	while ((pattern != 'X') && (pattern != 'O')) {
+		printf("Please input O or X: ");
+		fgets(&pattern, MAX_LINE, stdin);
+		if (pattern == '\0') {
+			printf("\nQuitting...\n");
+			exit(0);
+		}
+	}
+	printf("Player 2 is %c.\n", pattern == 'O' ? 'X' : 'O');
+	printf("---------------\n");
+	print_board(board);
+
 	while (1) {
-		turn(board, 'X');
+		printf("Player %d, pick a column: ", curr_player);
+		turn(board, pattern);
 		print_board(board);
+		if (game_over(board)) {
+			break;
+		}
+		pattern = pattern == 'O' ? 'X' : 'O';
+		curr_player = curr_player == 1 ? 2 : 1;
 	}
 	
 	return 1;
