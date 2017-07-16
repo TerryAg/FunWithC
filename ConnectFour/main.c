@@ -46,66 +46,14 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	return -1; // full col. shouldn't happen
 }
 
-int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_done) {
+int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_done,
+				int x_coord, int y_coord) {
 	if (turns_done < 7) {
 		return 0;
 	}
-	int count = 0;
-	int seen;
-	// Check horizontal
-	for (int x = 0; x < BOARD_LENGTH; x++) {
-		seen = 0;
-		for (int y = 0; y < BOARD_HEIGHT; y++) {
-			if (board[y][x] != ' ') {
-				seen++;
-			}
-			if (board[y][x] == pattern) {
-				count++;
-				if (count == 4) {
-					printf("Player won!\n");
-					return 1;
-				}
-			} else {
-				count = 0;
-				if (y > BOARD_LENGTH-4) {
-					// then there's no chance of getting a c4
-					continue;
-				}
-			}
-		}
-		if (seen == 0) {
-			//the row is empty of anything
-			// stop checking horiz rows
-			break;
-		}
-	}
-
-	for (int x = 0; x < BOARD_LENGTH; x++) {
-		seen = 0;
-		for (int y = 0; y < BOARD_HEIGHT; y++) {
-			if (board[x][y] != ' ') {
-				seen++;
-			}
-			if (board[x][y] == pattern) {
-				count++;
-				if (count == 4) {
-					printf("Player won!\n");
-					return 1;
-				}
-			} else {
-				count = 0;
-				if (y > BOARD_HEIGHT-4) {
-					// then there's no chance of getting a c4
-					continue;
-				}
-			}
-		}
-		if (seen == 0) {
-			//the row is empty of anything
-			// stop checking horiz rows
-			break;
-		}
-	}
+	
+	// Check around the point and see if 4 in a row
+	
 
 	if (turns_done == BOARD_HEIGHT*BOARD_LENGTH) {
 		printf("Draw!\n");
@@ -114,7 +62,8 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 	return 0;
 }
 
-void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
+void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern,
+			int *x_coord, int *y_coord) {
 	char input[MAX_LINE];
 	char *end;
 	int choice, num;
@@ -127,7 +76,9 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern) {
 		} else if (board[choice][BOARD_HEIGHT-1] != ' ') {
 			printf("Column is full! ");
 		} else {
-			board[choice][top_of_col(board, choice)] = pattern;
+			*x_coord = choice;
+			*y_coord = top_of_col(board, choice);
+			board[*x_coord][*y_coord] = pattern;
 			return;
 		}
 
@@ -139,6 +90,7 @@ int main(void) {
 	char pattern = '\0';
 	int curr_player = 1;
 	int turns_done = 0;
+	int x_coord, y_coord;
 
 	create_board(board);
 	print_board(board);
@@ -158,10 +110,10 @@ int main(void) {
 
 	while (1) {
 		printf("Player %d, pick a column: ", curr_player);
-		turn(board, pattern);
+		turn(board, pattern, &x_coord, &y_coord);
 		turns_done++;
 		print_board(board);
-		if (game_over(board, pattern, turns_done)) {
+		if (game_over(board, pattern, turns_done, x_coord, y_coord)) {
 			break;
 		}
 		pattern = pattern == 'O' ? 'X' : 'O';
