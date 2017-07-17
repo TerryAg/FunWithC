@@ -6,6 +6,7 @@
 #define MAX_LINE 128
 
 void create_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
+	// Creates the board, where each sub-array is a column
 	for (int x = 0; x < BOARD_LENGTH; x++) {
 		for (int y = 0; y < BOARD_HEIGHT; y++) {
 			board[x][y] = ' ';
@@ -23,6 +24,7 @@ void create_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 	 {' ', ' ', ' ', ' ', ' ', ' '}}
 */
 void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
+	// Prints the board
 	for (int x = BOARD_HEIGHT-1; x >= 0; x--) {
 		for (int y = 0; y < BOARD_LENGTH; y++) {
 			printf("|%c", board[y][x]);
@@ -43,11 +45,13 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 			return x;
 		}
 	}
-	return -1; // full col. shouldn't happen since will be caught earlier
+	return -1; // Shouldn't happen
 }
 
 int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_done,
 				int x, int y) {
+	// Determines if the game is over by seeing if any
+	// four in a row at the most recent placement
 	if (turns_done < 7) {
 		return 0;
 	}
@@ -110,7 +114,6 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 
 	if ((x > 2) && (y < 3)) {
 		// check diag rightup
-		printf("diag rightup\n");
 		if ((board[x-1][y+1] == pattern) && 
 		(board[x-2][y+2] == pattern) &&
 		(board[x-3][y+3] == pattern)) {
@@ -137,6 +140,7 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 
 void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern,
 			int *x_coord, int *y_coord) {
+	// Plays the current player's turn
 	char input[MAX_LINE];
 	char *end;
 	int choice, num;
@@ -154,8 +158,9 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern,
 			board[*x_coord][*y_coord] = pattern;
 			return;
 		}
-
 	}
+	printf("\nQuitting...\n");
+	exit(0);
 }
 
 int main(void) {
