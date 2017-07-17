@@ -65,60 +65,48 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 	
 	// Check around the point and see if 4 in a row
 	 
-	if (x > 2) {
+	if ((x > 2) && (check(board, x, y, -1, -2, -3, 0, 0, 0))) {
 		// Then we can check upwards
-		if (check(board, x, y, -1, -2, -3, 0, 0, 0)) {
-			return 1;
-		}
+		return 1;
 	}
 
-	if (y > 2) {
+	if ((y > 2) && (check(board, x, y, 0, 0, 0, -1, -2, -3))) {
 		// can check left
-		if (check(board, x, y, 0, 0, 0, -1, -2, -3)) {
-			return 1;
-		}
+		return 1;
 	}
 
-	if (x < 4) {
+	if ((x < 4) && (check(board, x, y, 1, 2, 3, 0, 0, 0))) {
 		// can check down
-		if (check(board, x, y, 1, 2, 3, 0, 0, 0)) {
-			return 1;
-		}
+		return 1;
 	}
 
-	if (y < 3) {
+	if ((y < 3) && (check(board, x, y, 0, 0, 0, 1, 2, 3))) {
 		// can check right
-		if (check(board, x, y, 0, 0, 0, 1, 2, 3)) {
-			return 1;
-		}
+		return 1;
 	}
 
-	if ((x < 4) && (y < 3)) {
+	if (((x < 4) && (y < 3)) &&
+		(check(board, x, y, 1, 2, 3, 1, 2, 3))) {
 		// check diag rightdown
-		if (check(board, x, y, 1, 2, 3, 1, 2, 3)) {
-			return 1;
-		}
+		return 1;
 	}
 
-	if ((x > 2) && (y > 2)) {
+	if (((x > 2) && (y > 2)) &&
+		(check(board, x, y, -1, -2, -3, -1, -2, -3))) {
 		// check diag leftup
-		if (check(board, x, y, -1, -2, -3, -1, -2, -3)) {
-			return 1;
-		}	
+		return 1;
 	}
 
-	if ((x > 2) && (y < 3)) {
+	if (((x > 2) && (y < 3)) &&
+		(check(board, x, y, -1, -2, -3, 1, 2, 3))) {
 		// check diag rightup
-		if (check(board, x, y, -1, -2, -3, 1, 2, 3)) {
-			return 1;
-		}
+		return 1;
 	}
 
-	if ((x < 4) && (y > 2)) {
+	if (((x < 4) && (y > 2)) &&
+		(check(board, x, y, 1, 2, 3, -1, -2, -3))) {
 		// check diag leftdown
-		if (check(board, x, y, 1, 2, 3, -1, -2, -3)) {
-			return 1;
-		}	
+		return 1;
 	}
 
 	if (turns_done == BOARD_HEIGHT*BOARD_LENGTH) {
