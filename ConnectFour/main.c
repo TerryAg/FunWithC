@@ -48,11 +48,12 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	return -1; // Shouldn't happen
 }
 
-int check(char board[BOARD_LENGTH][BOARD_HEIGHT], int x, int y,
-			int x1, int x2, int x3, int y1, int y2, int y3) {
+int check(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern,
+			int x, int y, int x1, int x2, int x3,
+			int y1, int y2, int y3) {
 	return ((board[x+x1][y+y1] == pattern) && 
 		(board[x+x2][y+y2] == pattern) &&
-		(board[x+x3][y+y3] == pattern)) 
+		(board[x+x3][y+y3] == pattern));
 }
 
 int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
@@ -65,46 +66,46 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 	
 	// Check around the point and see if 4 in a row
 	 
-	if ((x > 2) && (check(board, x, y, -1, -2, -3, 0, 0, 0))) {
+	if ((x > 2) && (check(board, pattern, x, y, -1, -2, -3, 0, 0, 0))) {
 		// Then we can check upwards
 		return 1;
 	}
 
-	if ((y > 2) && (check(board, x, y, 0, 0, 0, -1, -2, -3))) {
+	if ((y > 2) && (check(board, pattern, x, y, 0, 0, 0, -1, -2, -3))) {
 		// can check left
 		return 1;
 	}
 
-	if ((x < 4) && (check(board, x, y, 1, 2, 3, 0, 0, 0))) {
+	if ((x < 4) && (check(board, pattern, x, y, 1, 2, 3, 0, 0, 0))) {
 		// can check down
 		return 1;
 	}
 
-	if ((y < 3) && (check(board, x, y, 0, 0, 0, 1, 2, 3))) {
+	if ((y < 3) && (check(board, pattern, x, y, 0, 0, 0, 1, 2, 3))) {
 		// can check right
 		return 1;
 	}
 
 	if (((x < 4) && (y < 3)) &&
-		(check(board, x, y, 1, 2, 3, 1, 2, 3))) {
+		(check(board, pattern, x, y, 1, 2, 3, 1, 2, 3))) {
 		// check diag rightdown
 		return 1;
 	}
 
 	if (((x > 2) && (y > 2)) &&
-		(check(board, x, y, -1, -2, -3, -1, -2, -3))) {
+		(check(board, pattern, x, y, -1, -2, -3, -1, -2, -3))) {
 		// check diag leftup
 		return 1;
 	}
 
 	if (((x > 2) && (y < 3)) &&
-		(check(board, x, y, -1, -2, -3, 1, 2, 3))) {
+		(check(board, pattern, x, y, -1, -2, -3, 1, 2, 3))) {
 		// check diag rightup
 		return 1;
 	}
 
 	if (((x < 4) && (y > 2)) &&
-		(check(board, x, y, 1, 2, 3, -1, -2, -3))) {
+		(check(board, pattern, x, y, 1, 2, 3, -1, -2, -3))) {
 		// check diag leftdown
 		return 1;
 	}
@@ -133,7 +134,7 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern,
 		} else {
 			*x_coord = choice;
 			for (int x = 0; x < BOARD_HEIGHT; x++) {
-				if (board[column][x] == ' ') {
+				if (board[*x_coord][x] == ' ') {
 					*y_coord = x;
 					board[*x_coord][*y_coord] = pattern;
 					return;
