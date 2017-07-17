@@ -7,22 +7,21 @@
 
 void create_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 	// Creates the board, where each sub-array is a column
+	//   bottom					top
+	// {{' ', ' ', ' ', ' ', ' ', ' '}, // col 1
+	//  {' ', ' ', ' ', ' ', ' ', ' '}, // col 2
+	//  {' ', ' ', ' ', ' ', ' ', ' '}, // etc
+	//  {' ', ' ', ' ', ' ', ' ', ' '},
+	//  {' ', ' ', ' ', ' ', ' ', ' '},
+	//  {' ', ' ', ' ', ' ', ' ', ' '},
+	//  {' ', ' ', ' ', ' ', ' ', ' '}}
 	for (int x = 0; x < BOARD_LENGTH; x++) {
 		for (int y = 0; y < BOARD_HEIGHT; y++) {
 			board[x][y] = ' ';
 		}
 	}
 }
-/*
-	  bottom					top
-	{{' ', ' ', ' ', ' ', ' ', ' '}, // col 1
-	 {' ', ' ', ' ', ' ', ' ', ' '}, // col 2
-	 {' ', ' ', ' ', ' ', ' ', ' '}, // etc
-	 {' ', ' ', ' ', ' ', ' ', ' '},
-	 {' ', ' ', ' ', ' ', ' ', ' '},
-	 {' ', ' ', ' ', ' ', ' ', ' '},
-	 {' ', ' ', ' ', ' ', ' ', ' '}}
-*/
+
 void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 	// Prints the board
 	printf("---------------\n");
@@ -49,6 +48,13 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	return -1; // Shouldn't happen
 }
 
+int check(char board[BOARD_LENGTH][BOARD_HEIGHT], int x, int y,
+			int x1, int x2, int x3, int y1, int y2, int y3) {
+	return ((board[x+x1][y+y1] == pattern) && 
+		(board[x+x2][y+y2] == pattern) &&
+		(board[x+x3][y+y3] == pattern)) 
+}
+
 int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 				char pattern, int turns_done, int x, int y) {
 	// Determines if the game is over by seeing if any
@@ -61,73 +67,56 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 	 
 	if (x > 2) {
 		// Then we can check upwards
-		if ((board[x-1][y] == pattern) && 
-		(board[x-2][y] == pattern) &&
-		(board[x-3][y] == pattern)) {
+		if (check(board, x, y, -1, -2, -3, 0, 0, 0)) {
 			return 1;
 		}
 	}
 
 	if (y > 2) {
 		// can check left
-		if ((board[x][y-1] == pattern) && 
-		(board[x][y-2] == pattern) &&
-		(board[x][y-3] == pattern)) {
+		if (check(board, x, y, 0, 0, 0, -1, -2, -3)) {
 			return 1;
 		}
 	}
 
 	if (x < 4) {
 		// can check down
-		if ((board[x+1][y] == pattern) && 
-		(board[x+2][y] == pattern) &&
-		(board[x+3][y] == pattern)) {
+		if (check(board, x, y, 1, 2, 3, 0, 0, 0)) {
 			return 1;
 		}
 	}
 
 	if (y < 3) {
 		// can check right
-		if ((board[x][y+1] == pattern) && 
-		(board[x][y+2] == pattern) &&
-		(board[x][y+3] == pattern)) {
+		if (check(board, x, y, 0, 0, 0, 1, 2, 3)) {
 			return 1;
 		}
 	}
 
 	if ((x < 4) && (y < 3)) {
 		// check diag rightdown
-		if ((board[x+1][y+1] == pattern) && 
-		(board[x+2][y+2] == pattern) &&
-		(board[x+3][y+3] == pattern)) {
+		if (check(board, x, y, 1, 2, 3, 1, 2, 3)) {
 			return 1;
-		}	
+		}
 	}
 
 	if ((x > 2) && (y > 2)) {
 		// check diag leftup
-		if ((board[x-1][y-1] == pattern) && 
-		(board[x-2][y-2] == pattern) &&
-		(board[x-3][y-3] == pattern)) {
+		if (check(board, x, y, -1, -2, -3, -1, -2, -3)) {
 			return 1;
 		}	
 	}
 
 	if ((x > 2) && (y < 3)) {
 		// check diag rightup
-		if ((board[x-1][y+1] == pattern) && 
-		(board[x-2][y+2] == pattern) &&
-		(board[x-3][y+3] == pattern)) {
+		if (check(board, x, y, -1, -2, -3, 1, 2, 3)) {
 			return 1;
-		}	
+		}
 	}
 
 	if ((x < 4) && (y > 2)) {
 		// check diag leftdown
-
-		if ((board[x+1][y-1] == pattern) && 
-		(board[x+2][y-2] == pattern) &&
-		(board[x+3][y-3] == pattern)) {
+		if (check(board, x, y, 1, 2, 3, -1, -2, -3)) {
 			return 1;
 		}	
 	}
@@ -155,9 +144,13 @@ void turn(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern,
 			printf("Column is full! ");
 		} else {
 			*x_coord = choice;
-			*y_coord = top_of_col(board, choice);
-			board[*x_coord][*y_coord] = pattern;
-			return;
+			for (int x = 0; x < BOARD_HEIGHT; x++) {
+				if (board[column][x] == ' ') {
+					*y_coord = x;
+					board[*x_coord][*y_coord] = pattern;
+					return;
+				}
+			}
 		}
 	}
 	printf("\nQuitting...\n");
