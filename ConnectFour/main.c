@@ -25,6 +25,7 @@ void create_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 */
 void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 	// Prints the board
+	printf("---------------\n");
 	for (int x = BOARD_HEIGHT-1; x >= 0; x--) {
 		for (int y = 0; y < BOARD_LENGTH; y++) {
 			printf("|%c", board[y][x]);
@@ -35,12 +36,12 @@ void print_board(char board[BOARD_LENGTH][BOARD_HEIGHT]) {
 		printf(" %d", y);
 	}
 	printf("\n");
+
 }
 
 int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	// Returns the top-most empty space of a column
 	for (int x = 0; x < BOARD_HEIGHT; x++) {
-		printf("x: %d\n", x);
 		if (board[column][x] == ' ') {
 			return x;
 		}
@@ -84,7 +85,7 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 			return 1;
 		}
 	}
-	
+
 	if (y < 3) {
 		// can check right
 		if ((board[x][y+1] == pattern) && 
@@ -171,7 +172,6 @@ int main(void) {
 	int x_coord, y_coord;
 
 	create_board(board);
-	print_board(board);
 	printf("Welcome to Connect Four!\n");
 	printf("Player 1: Would you like to be O or X?\n");
 	while ((pattern != 'X') && (pattern != 'O')) {
@@ -183,7 +183,6 @@ int main(void) {
 		}
 	}
 	printf("Player 2 is %c.\n", pattern == 'O' ? 'X' : 'O');
-	printf("---------------\n");
 	print_board(board);
 
 	while (1) {
