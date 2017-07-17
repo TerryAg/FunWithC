@@ -48,8 +48,8 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 	return -1; // Shouldn't happen
 }
 
-int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_done,
-				int x, int y) {
+int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
+				char pattern, int turns_done, int x, int y) {
 	// Determines if the game is over by seeing if any
 	// four in a row at the most recent placement
 	if (turns_done < 7) {
@@ -74,7 +74,6 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 		(board[x][y-3] == pattern)) {
 			return 1;
 		}
-
 	}
 
 	if (x < 4) {
@@ -85,6 +84,7 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 			return 1;
 		}
 	}
+	
 	if (y < 3) {
 		// can check right
 		if ((board[x][y+1] == pattern) && 
