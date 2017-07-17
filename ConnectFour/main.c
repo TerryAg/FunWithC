@@ -61,52 +61,52 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 	// Determines if the game is over by seeing if any
 	// four in a row at the most recent placement
 	if (turns_done < 7) {
+		// There's no chance that the game has ended
 		return 0;
 	}
 	
 	// Check around the point and see if 4 in a row
-	 
 	if ((x > 2) && (check(board, pattern, x, y, -1, -2, -3, 0, 0, 0))) {
 		// Then we can check upwards
 		return 1;
 	}
 
 	if ((y > 2) && (check(board, pattern, x, y, 0, 0, 0, -1, -2, -3))) {
-		// can check left
+		// Check left
 		return 1;
 	}
 
 	if ((x < 4) && (check(board, pattern, x, y, 1, 2, 3, 0, 0, 0))) {
-		// can check down
+		// Check down
 		return 1;
 	}
 
 	if ((y < 3) && (check(board, pattern, x, y, 0, 0, 0, 1, 2, 3))) {
-		// can check right
+		// Check right
 		return 1;
 	}
 
 	if (((x < 4) && (y < 3)) &&
 		(check(board, pattern, x, y, 1, 2, 3, 1, 2, 3))) {
-		// check diag rightdown
+		// Check south-east diagonal
 		return 1;
 	}
 
 	if (((x > 2) && (y > 2)) &&
 		(check(board, pattern, x, y, -1, -2, -3, -1, -2, -3))) {
-		// check diag leftup
+		// Check north-west diagonal
 		return 1;
 	}
 
 	if (((x > 2) && (y < 3)) &&
 		(check(board, pattern, x, y, -1, -2, -3, 1, 2, 3))) {
-		// check diag rightup
+		// Check north-east diagonal
 		return 1;
 	}
 
 	if (((x < 4) && (y > 2)) &&
 		(check(board, pattern, x, y, 1, 2, 3, -1, -2, -3))) {
-		// check diag leftdown
+		// Check south-west diagonal
 		return 1;
 	}
 
