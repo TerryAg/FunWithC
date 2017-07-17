@@ -173,12 +173,16 @@ int main(void) {
 		turns_done++;
 		print_board(board);
 		if (game_over(board, pattern, turns_done, x_coord, y_coord)) {
+			printf("-*-*-*-*-*-*-*-\n");
 			printf("Player %d wins!\n", curr_player);
+			printf("-*-*-*-*-*-*-*-\n");
 			break;
 		}
 		pattern = pattern == 'O' ? 'X' : 'O';
 		curr_player = curr_player == 1 ? 2 : 1;
 	}
-	
 	return 1;
 }
+
+// TODO:
+// Point out the winning combination
