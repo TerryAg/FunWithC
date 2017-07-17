@@ -112,7 +112,7 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT],
 
 	if (turns_done == BOARD_HEIGHT*BOARD_LENGTH) {
 		printf("Draw!\n");
-		return 1;
+		exit(1);
 	}
 	return 0;
 }
@@ -173,6 +173,7 @@ int main(void) {
 		turns_done++;
 		print_board(board);
 		if (game_over(board, pattern, turns_done, x_coord, y_coord)) {
+			printf("Player %d wins!\n", curr_player);
 			break;
 		}
 		pattern = pattern == 'O' ? 'X' : 'O';
