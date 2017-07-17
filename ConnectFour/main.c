@@ -43,17 +43,88 @@ int top_of_col(char board[BOARD_LENGTH][BOARD_HEIGHT], int column) {
 			return x;
 		}
 	}
-	return -1; // full col. shouldn't happen
+	return -1; // full col. shouldn't happen since will be caught earlier
 }
 
 int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_done,
-				int x_coord, int y_coord) {
+				int x, int y) {
 	if (turns_done < 7) {
 		return 0;
 	}
 	
 	// Check around the point and see if 4 in a row
-	
+	 
+	if (x > 2) {
+		// Then we can check upwards
+		if ((board[x-1][y] == pattern) && 
+		(board[x-2][y] == pattern) &&
+		(board[x-3][y] == pattern)) {
+			return 1;
+		}
+	}
+
+	if (y > 2) {
+		// can check left
+		if ((board[x][y-1] == pattern) && 
+		(board[x][y-2] == pattern) &&
+		(board[x][y-3] == pattern)) {
+			return 1;
+		}
+
+	}
+
+	if (x < 4) {
+		// can check down
+		if ((board[x+1][y] == pattern) && 
+		(board[x+2][y] == pattern) &&
+		(board[x+3][y] == pattern)) {
+			return 1;
+		}
+	}
+	if (y < 3) {
+		// can check right
+		if ((board[x][y+1] == pattern) && 
+		(board[x][y+2] == pattern) &&
+		(board[x][y+3] == pattern)) {
+			return 1;
+		}
+	}
+
+	if ((x < 4) && (y < 3)) {
+		// check diag rightdown
+		if ((board[x+1][y+1] == pattern) && 
+		(board[x+2][y+2] == pattern) &&
+		(board[x+3][y+3] == pattern)) {
+			return 1;
+		}	
+	}
+
+	if ((x > 2) && (y > 2)) {
+		// check diag leftup
+		if ((board[x-1][y-1] == pattern) && 
+		(board[x-2][y-2] == pattern) &&
+		(board[x-3][y-3] == pattern)) {
+			return 1;
+		}	
+	}
+
+	if ((x > 2) && (y < 3)) {
+		// check diag rightup
+		if ((board[x-1][y+1] == pattern) && 
+		(board[x-2][y+2] == pattern) &&
+		(board[x-3][y+3] == pattern)) {
+			return 1;
+		}	
+	}
+
+	if ((x < 4) && (y > 3)) {
+		// check diag leftdown
+		if ((board[x+1][y-1] == pattern) && 
+		(board[x+2][y-2] == pattern) &&
+		(board[x+3][y-3] == pattern)) {
+			return 1;
+		}	
+	}
 
 	if (turns_done == BOARD_HEIGHT*BOARD_LENGTH) {
 		printf("Draw!\n");
