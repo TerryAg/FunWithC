@@ -110,6 +110,7 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 
 	if ((x > 2) && (y < 3)) {
 		// check diag rightup
+		printf("diag rightup\n");
 		if ((board[x-1][y+1] == pattern) && 
 		(board[x-2][y+2] == pattern) &&
 		(board[x-3][y+3] == pattern)) {
@@ -117,8 +118,9 @@ int game_over(char board[BOARD_LENGTH][BOARD_HEIGHT], char pattern, int turns_do
 		}	
 	}
 
-	if ((x < 4) && (y > 3)) {
+	if ((x < 4) && (y > 2)) {
 		// check diag leftdown
+
 		if ((board[x+1][y-1] == pattern) && 
 		(board[x+2][y-2] == pattern) &&
 		(board[x+3][y-3] == pattern)) {
