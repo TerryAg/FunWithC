@@ -176,13 +176,13 @@ int main(void) {
 			printf("-*-*-*-*-*-*-*-\n");
 			printf("Player %d wins!\n", curr_player);
 			printf("-*-*-*-*-*-*-*-\n");
-			break;
+			return 1;
 		}
 		pattern = pattern == 'O' ? 'X' : 'O';
 		curr_player = curr_player == 1 ? 2 : 1;
 	}
-	return 1;
+	
 }
 
 // TODO:
-// Point out the winning combination
+// Point out the winning combination.
