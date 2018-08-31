@@ -5,7 +5,7 @@
 
 void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int scoring[BOARD_SIZE*2 + 2]) {
 	char input[MAX_LINE];
-	int choice, num;
+	int choice;
 	int row, col;
 	int score = curr_player == 1 ? 1 : -1;
 
@@ -19,7 +19,7 @@ void turn(char board[BOARD_SIZE][BOARD_SIZE], int curr_player, int pattern, int 
 			printf("That's not a number! ");
 		} else if ((choice < 1) || (choice > BOARD_SIZE*BOARD_SIZE)) {
 			printf("That number is out of range! ");
-		} else if (board[row][col] != ' ') {
+		} else if (board[row][col] == 'O' || board[row][col] == 'X' ) {
 			printf("That spot is already occupied! ");
 		} else {
 			board[row][col] = pattern;
